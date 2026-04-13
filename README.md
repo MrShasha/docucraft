@@ -1,5 +1,7 @@
 # Docucraft
 
+![Docucraft](/banner.png)
+
 Docucraft is an open source React component library focused on reusable UI building blocks for Docusaurus projects.
 
 Created and maintained by Jiří Šašek.
