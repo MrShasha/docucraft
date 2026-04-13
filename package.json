@@ -1,0 +1,88 @@
+{
+  "name": "docucraft",
+  "version": "1.0.0",
+  "description": "Docucraft is an open source component library of reusable React components for Docusaurus.",
+  "keywords": [
+    "docusaurus",
+    "docucraft",
+    "components",
+    "library",
+    "opensource",
+    "mermaid",
+    "react",
+    "diagram",
+    "pan",
+    "zoom",
+    "fullscreen",
+    "export"
+  ],
+  "homepage": "https://github.com/MrShasha/docucraft",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MrShasha/docucraft.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MrShasha/docucraft/issues"
+  },
+  "license": "MIT",
+  "author": "Jiří Šašek",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./mermaid": {
+      "types": "./dist/components/MermaidDiagram/index.d.ts",
+      "import": "./dist/components/MermaidDiagram/index.js",
+      "default": "./dist/components/MermaidDiagram/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "NOTICE",
+    "CONTRIBUTING.md",
+    "CODE_OF_CONDUCT.md"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true,
+    "tag": "latest"
+  },
+  "engines": {
+    "node": ">=18.0"
+  },
+  "scripts": {
+    "clean": "rimraf dist",
+    "typecheck": "tsc --noEmit -p tsconfig.build.json",
+    "build:ts": "tsc -p tsconfig.build.json",
+    "build:css": "copyfiles -u 1 \"src/**/*.module.css\" dist",
+    "build": "npm-run-all clean build:ts build:css",
+    "prepublishOnly": "npm-run-all typecheck build",
+    "pack:check": "npm pack --dry-run"
+  },
+  "peerDependencies": {
+    "@docusaurus/theme-mermaid": ">=3.0.0",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "dependencies": {
+    "canvg": "^4.0.3"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "copyfiles": "^2.4.1",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^6.0.1",
+    "typescript": "~6.0.2"
+  }
+}
