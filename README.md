@@ -9,6 +9,7 @@ Created and maintained by Jiří Šašek.
 ## Current components
 
 - `MermaidDiagram`: interactive Mermaid wrapper with zoom, pan, fullscreen, SVG export, and PNG export.
+- `ClassGraph`: interactive DTO/class relationship graph with focus mode, full graph mode, inline mode, and property-level navigation.
 
 ## Project structure
 
@@ -16,6 +17,9 @@ Created and maintained by Jiří Šašek.
 src/
   index.ts
   components/
+    ClassGraph/
+      index.tsx
+      styles.module.css
     MermaidDiagram/
       index.tsx
       styles.module.css
@@ -54,13 +58,35 @@ export default {
 ## Usage
 
 ```mdx
-import {MermaidDiagram} from 'docucraft';
+import {ClassGraph, MermaidDiagram} from 'docucraft';
 
 <MermaidDiagram
   definition={String.raw`flowchart TB
 A[Start] --> B[Done]`}
   exportFileName="my-diagram"
   hintText="Zoom: wheel. Pan: drag. Reset: double click."
+/>
+
+<ClassGraph
+  data={{
+    classes: [
+      {
+        id: 'order',
+        name: 'OrderDto',
+        properties: [
+          {name: 'id', typeLabel: 'string', isPrimitive: true},
+          {name: 'customer', typeLabel: 'CustomerDto', typeId: 'customer'},
+        ],
+      },
+      {
+        id: 'customer',
+        name: 'CustomerDto',
+        properties: [{name: 'name', typeLabel: 'string', isPrimitive: true}],
+      },
+    ],
+  }}
+  focus="order"
+  mode="focus"
 />
 ```
 
@@ -94,6 +120,16 @@ npm run pack:check
 - `exportFileName?: string` File name prefix for exports (default `diagram`).
 - `enableFullscreen?: boolean` Show fullscreen action (default `true`).
 - `enableExport?: boolean` Show export action (default `true`).
+
+### ClassGraph props
+
+- `data: ClassGraphModel` DTO/class graph model.
+- `focus?: string` Initially focused DTO/class id.
+- `mode?: 'focus' | 'full' | 'inline'` Initial rendering mode (default `focus`).
+- `height?: number` Canvas height in pixels (default `620`).
+- `maxDepth?: number` Relationship expansion depth in focus mode (default `1`).
+- `showPrimitives?: boolean` Include primitive-only properties (default `true`).
+- `className?: string` Additional class on the root wrapper.
 
 ## Development
 

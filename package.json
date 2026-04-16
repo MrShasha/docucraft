@@ -1,6 +1,6 @@
 {
   "name": "docucraft",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Docucraft is an open source component library of reusable React components for Docusaurus.",
   "keywords": [
     "docusaurus",
@@ -11,6 +11,8 @@
     "mermaid",
     "react",
     "diagram",
+    "classgraph",
+    "reactflow",
     "pan",
     "zoom",
     "fullscreen",
@@ -40,6 +42,11 @@
       "types": "./dist/components/MermaidDiagram/index.d.ts",
       "import": "./dist/components/MermaidDiagram/index.js",
       "default": "./dist/components/MermaidDiagram/index.js"
+    },
+    "./class-graph": {
+      "types": "./dist/components/ClassGraph/index.d.ts",
+      "import": "./dist/components/ClassGraph/index.js",
+      "default": "./dist/components/ClassGraph/index.js"
     }
   },
   "files": [
@@ -76,6 +83,8 @@
     "react-dom": ">=18.0.0"
   },
   "dependencies": {
+    "@dagrejs/dagre": "^3.0.0",
+    "@xyflow/react": "^12.8.5",
     "canvg": "^4.0.3"
   },
   "devDependencies": {
