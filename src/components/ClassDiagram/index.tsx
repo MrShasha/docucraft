@@ -20,9 +20,11 @@ import {
 import '@xyflow/react/dist/style.css';
 import styles from './styles.module.css';
 
-export type ClassGraphModel = {
+export type ClassDiagramModel = {
   classes: DtoClass[];
 };
+
+export type ClassGraphModel = ClassDiagramModel;
 
 export type DtoClass = {
   id: string;
@@ -46,8 +48,8 @@ export type DtoProperty = {
   summary?: string;
 };
 
-export type ClassGraphProps = {
-  data: ClassGraphModel;
+export type ClassDiagramProps = {
+  data: ClassDiagramModel;
   focus?: string;
   mode?: 'focus' | 'full' | 'inline';
   height?: number;
@@ -55,6 +57,8 @@ export type ClassGraphProps = {
   showPrimitives?: boolean;
   className?: string;
 };
+
+export type ClassGraphProps = ClassDiagramProps;
 
 type DtoNodeData = {
   dto: DtoClass;
@@ -82,11 +86,11 @@ function getNodeHeight(propertyCount: number): number {
   return HEADER_HEIGHT + Math.max(1, propertyCount) * ROW_HEIGHT + FOOTER_HEIGHT;
 }
 
-function getClassIndex(data: ClassGraphModel): Map<string, DtoClass> {
+function getClassIndex(data: ClassDiagramModel): Map<string, DtoClass> {
   return new Map(data.classes.map((dto) => [dto.id, dto]));
 }
 
-function getIncomingRefs(data: ClassGraphModel): Map<string, Set<string>> {
+function getIncomingRefs(data: ClassDiagramModel): Map<string, Set<string>> {
   const map = new Map<string, Set<string>>();
 
   for (const dto of data.classes) {
@@ -114,7 +118,7 @@ function getIncomingRefs(data: ClassGraphModel): Map<string, Set<string>> {
 }
 
 function collectVisibleIds(
-  data: ClassGraphModel,
+  data: ClassDiagramModel,
   focusId: string | undefined,
   mode: 'focus' | 'full' | 'inline',
   maxDepth: number
@@ -247,7 +251,7 @@ function layoutGraph(nodes: DtoGraphNode[], edges: Edge[], direction: 'LR' | 'TB
 }
 
 function buildFlowElements(
-  data: ClassGraphModel,
+  data: ClassDiagramModel,
   focusId: string | undefined,
   mode: 'focus' | 'full',
   maxDepth: number,
@@ -537,7 +541,7 @@ function DtoSelectionBar({
   );
 }
 
-function ClassGraphClient({
+function ClassDiagramClient({
   data,
   focus,
   mode = 'focus',
@@ -545,7 +549,7 @@ function ClassGraphClient({
   maxDepth = 1,
   showPrimitives = true,
   className,
-}: ClassGraphProps) {
+}: ClassDiagramProps) {
   const initialId = focus ?? data.classes[0]?.id;
   const [focusTypeId, setFocusTypeId] = useState<string | undefined>(initialId);
   const [selectedTypeId, setSelectedTypeId] = useState<string | undefined>(initialId);
@@ -750,14 +754,14 @@ function ClassGraphClient({
   );
 }
 
-export default function ClassGraph(props: ClassGraphProps) {
+export default function ClassDiagram(props: ClassDiagramProps) {
   const fallbackHeight = props.height ?? 620;
 
   return (
     <BrowserOnly fallback={<div style={{ height: fallbackHeight }}>Loading DTO graph...</div>}>
       {() => (
         <ReactFlowProvider>
-          <ClassGraphClient {...props} />
+          <ClassDiagramClient {...props} />
         </ReactFlowProvider>
       )}
     </BrowserOnly>

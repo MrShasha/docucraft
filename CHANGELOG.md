@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.1] - 2026-04-16
+
+### Changed
+- Renamed public component naming from `ClassGraph` to `ClassDiagram`.
+- Renamed component folder to `src/components/ClassDiagram`.
+- Added subpath export `docucraft/class-diagram`.
+
+### Compatibility
+- Kept `ClassGraph` root export and `docucraft/class-graph` subpath as aliases to avoid breaking existing imports.
+
 ## [1.1.0] - 2026-04-16
 
 ### Added

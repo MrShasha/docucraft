@@ -9,7 +9,7 @@ Created and maintained by Jiří Šašek.
 ## Current components
 
 - `MermaidDiagram`: interactive Mermaid wrapper with zoom, pan, fullscreen, SVG export, and PNG export.
-- `ClassGraph`: interactive DTO/class relationship graph with focus mode, full graph mode, inline mode, and property-level navigation.
+- `ClassDiagram`: interactive DTO/class relationship graph with focus mode, full graph mode, inline mode, and property-level navigation.
 
 ## Project structure
 
@@ -17,7 +17,7 @@ Created and maintained by Jiří Šašek.
 src/
   index.ts
   components/
-    ClassGraph/
+    ClassDiagram/
       index.tsx
       styles.module.css
     MermaidDiagram/
@@ -58,7 +58,7 @@ export default {
 ## Usage
 
 ```mdx
-import {ClassGraph, MermaidDiagram} from 'docucraft';
+import {ClassDiagram, MermaidDiagram} from 'docucraft';
 
 <MermaidDiagram
   definition={String.raw`flowchart TB
@@ -67,7 +67,7 @@ A[Start] --> B[Done]`}
   hintText="Zoom: wheel. Pan: drag. Reset: double click."
 />
 
-<ClassGraph
+<ClassDiagram
   data={{
     classes: [
       {
@@ -121,9 +121,9 @@ npm run pack:check
 - `enableFullscreen?: boolean` Show fullscreen action (default `true`).
 - `enableExport?: boolean` Show export action (default `true`).
 
-### ClassGraph props
+### ClassDiagram props
 
-- `data: ClassGraphModel` DTO/class graph model.
+- `data: ClassDiagramModel` DTO/class graph model.
 - `focus?: string` Initially focused DTO/class id.
 - `mode?: 'focus' | 'full' | 'inline'` Initial rendering mode (default `focus`).
 - `height?: number` Canvas height in pixels (default `620`).
