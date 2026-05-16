@@ -1,17 +1,319 @@
 # Docucraft
 
-![Docucraft](/banner.png)
+![Docucraft banner](./banner.png)
 
-Docucraft is an open source React component library focused on reusable UI building blocks for Docusaurus projects.
+Docucraft is an open-source React component library for technical documentation built with Docusaurus.
 
-Created and maintained by Jiří Šašek.
+It provides reusable, typed, documentation-first components for diagrams, repository maps, and architecture explanations. The goal is simple: keep docs readable for humans while still making complex systems explorable.
 
-## Current components
+## What You Get
 
-- `MermaidDiagram`: interactive Mermaid wrapper with zoom, pan, fullscreen, SVG export, and PNG export.
-- `ClassDiagram`: interactive DTO/class relationship graph with focus mode, full graph mode, inline mode, and property-level navigation.
+- `MermaidDiagram` - a Docusaurus Mermaid wrapper with zoom, pan, fullscreen, SVG export, and PNG export.
+- `ClassDiagram` - an interactive DTO/class relationship graph with focus, full, and inline modes.
+- `RepositoryExplorer` - a compact repository tree with file/folder icons, a detail panel, and optional relation graph.
 
-## Project structure
+Docucraft is designed for docs that need more than static Markdown, but should still be easy to maintain as data.
+
+## Installation
+
+```bash
+npm install docucraft
+```
+
+Docucraft expects React and Docusaurus in the consuming project.
+
+```bash
+npm install react react-dom @docusaurus/core @docusaurus/theme-mermaid
+```
+
+Most Docusaurus projects already have these installed. `@docusaurus/theme-mermaid` is required when using `MermaidDiagram`.
+
+## Docusaurus Setup
+
+Enable Mermaid support in `docusaurus.config.ts`:
+
+```ts
+export default {
+  markdown: {
+    mermaid: true,
+  },
+  themes: ['@docusaurus/theme-mermaid'],
+};
+```
+
+Then import components directly in Markdown/MDX pages:
+
+```mdx
+import {ClassDiagram, MermaidDiagram, RepositoryExplorer} from 'docucraft';
+```
+
+## Quick Start
+
+```mdx
+import {MermaidDiagram} from 'docucraft';
+
+<MermaidDiagram
+  definition={String.raw`flowchart LR
+    ROS[ROS topic] --> Handler[Stream handler] --> TE[TerraExplorer]
+  `}
+  ariaLabel="ROS stream flow"
+/>
+```
+
+```mdx
+import {ClassDiagram} from 'docucraft';
+
+<ClassDiagram
+  mode="focus"
+  focus="order"
+  data={{
+    classes: [
+      {
+        id: 'order',
+        name: 'OrderDto',
+        kind: 'record',
+        summary: 'Order data transferred from the API.',
+        properties: [
+          {name: 'id', typeLabel: 'string', isPrimitive: true, isRequired: true},
+          {name: 'customer', typeLabel: 'CustomerDto', typeId: 'customer'},
+        ],
+      },
+      {
+        id: 'customer',
+        name: 'CustomerDto',
+        properties: [{name: 'name', typeLabel: 'string', isPrimitive: true}],
+      },
+    ],
+  }}
+/>
+```
+
+```mdx
+import {RepositoryExplorer} from 'docucraft';
+
+<RepositoryExplorer
+  initialExpandedDepth={2}
+  sections={[
+    {
+      title: 'Application',
+      description: 'Main application source tree.',
+      root: {
+        name: 'src',
+        type: 'folder',
+        path: 'src/',
+        shortDescription: 'Application source code.',
+        longDescription: 'Runtime implementation and public contracts.',
+        children: [
+          {
+            name: 'IClient.ts',
+            type: 'file',
+            kind: 'interface',
+            path: 'src/IClient.ts',
+            shortDescription: 'Client contract.',
+            relations: [
+              {target: 'src/Client.ts', label: 'implemented by', type: 'implements'},
+            ],
+          },
+          {
+            name: 'Client.ts',
+            type: 'file',
+            kind: 'implementation',
+            path: 'src/Client.ts',
+            shortDescription: 'Client implementation.',
+          },
+        ],
+      },
+    },
+  ]}
+/>
+```
+
+## Import Paths
+
+Use the package root for normal usage:
+
+```ts
+import {MermaidDiagram, ClassDiagram, RepositoryExplorer} from 'docucraft';
+```
+
+Subpath imports are also available:
+
+```ts
+import MermaidDiagram from 'docucraft/mermaid';
+import ClassDiagram from 'docucraft/class-diagram';
+import RepositoryExplorer from 'docucraft/repository-explorer';
+```
+
+## Components
+
+### MermaidDiagram
+
+`MermaidDiagram` renders Mermaid source through Docusaurus and adds documentation-friendly interactions.
+
+Props:
+
+- `definition: string` - Mermaid source code.
+- `className?: string` - additional class on the root wrapper.
+- `ariaLabel?: string` - accessible label for the diagram viewport.
+- `minScale?: number` - minimum zoom, default `0.6`.
+- `maxScale?: number` - maximum zoom, default `4`.
+- `zoomStep?: number` - zoom increment, default `0.12`.
+- `showHint?: boolean` - show or hide the hint row, default `true`.
+- `hintText?: string` - custom hint text.
+- `exportFileName?: string` - export file prefix, default `diagram`.
+- `enableFullscreen?: boolean` - show fullscreen action, default `true`.
+- `enableExport?: boolean` - show export actions, default `true`.
+
+### ClassDiagram
+
+`ClassDiagram` renders typed class, DTO, record, and enum graphs from plain data.
+
+Props:
+
+- `data: ClassDiagramModel` - graph model.
+- `focus?: string` - initially focused class id.
+- `mode?: 'focus' | 'full' | 'inline'` - rendering mode, default `focus`.
+- `height?: number` - canvas height in pixels, default `620`.
+- `maxDepth?: number` - relationship expansion depth in focus mode, default `1`.
+- `showPrimitives?: boolean` - include primitive-only properties, default `true`.
+- `className?: string` - additional class on the root wrapper.
+
+Model shape:
+
+```ts
+type ClassDiagramModel = {
+  classes: DtoClass[];
+};
+
+type DtoClass = {
+  id: string;
+  name: string;
+  namespace?: string;
+  kind?: 'class' | 'record' | 'enum';
+  baseTypeId?: string;
+  summary?: string;
+  properties: DtoProperty[];
+};
+
+type DtoProperty = {
+  name: string;
+  typeLabel: string;
+  typeId?: string;
+  isNullable?: boolean;
+  isCollection?: boolean;
+  isEnum?: boolean;
+  isPrimitive?: boolean;
+  isRequired?: boolean;
+  summary?: string;
+};
+```
+
+### RepositoryExplorer
+
+`RepositoryExplorer` renders a compact, solution-explorer style tree. The tree stays intentionally dense; descriptions and relations live in the detail panel.
+
+Props:
+
+- `sections?: RepositorySection[]` - multiple repository sections, recommended for larger repositories.
+- `root?: RepositoryNode` - one root tree, useful for small projects.
+- `initialExpandedDepth?: number` - initial tree expansion depth, default `1`.
+- `showSectionDescriptions?: boolean` - show section item counts/tooltips, default `true`.
+- `labels?: Partial<RepositoryExplorerLabels>` - override built-in UI labels for localization.
+
+Node shape:
+
+```ts
+type RepositoryNode = {
+  id?: string;
+  name: string;
+  type: 'folder' | 'file';
+  kind?: RepositoryNodeKind;
+  shortDescription: string;
+  longDescription?: string;
+  path?: string;
+  children?: RepositoryNode[];
+  relations?: RepositoryRelation[];
+  defaultExpanded?: boolean;
+};
+```
+
+Use `path` when possible. Relation targets can resolve by `id`, `path`, normalized `path` without a trailing slash, or `name`.
+
+Relation shape:
+
+```ts
+type RepositoryRelation = {
+  target: string;
+  label: string;
+  type?: RepositoryRelationType;
+  description?: string;
+  external?: boolean;
+};
+
+type RepositoryRelationType =
+  | 'implements'
+  | 'calls'
+  | 'depends-on'
+  | 'uses'
+  | 'publishes'
+  | 'reads'
+  | 'hosts'
+  | 'configures'
+  | 'tests';
+```
+
+Common node kinds:
+
+```ts
+type RepositoryNodeKind =
+  | 'folder'
+  | 'file'
+  | 'interface'
+  | 'implementation'
+  | 'code'
+  | 'dto'
+  | 'json'
+  | 'xml'
+  | 'yaml'
+  | 'text'
+  | 'markdown'
+  | 'image'
+  | 'video'
+  | 'audio'
+  | 'pgm'
+  | 'rosMsg'
+  | 'config'
+  | 'dependency'
+  | 'test'
+  | 'asset'
+  | 'docs'
+  | 'script'
+  | 'package'
+  | 'project'
+  | 'solution'
+  | 'lock'
+  | 'database'
+  | 'archive';
+```
+
+Localization example:
+
+```tsx
+<RepositoryExplorer
+  sections={sections}
+  labels={{
+    relationsTitle: 'Relations',
+    noRelations: 'No relations described.',
+    emptySelection: 'Select a file or folder.',
+    graphFallback: 'The relation graph loads in the browser.',
+    expandNode: (name) => `Expand ${name}`,
+    collapseNode: (name) => `Collapse ${name}`,
+    sectionItemCount: (count) => `${count} items`,
+  }}
+/>
+```
+
+## Project Structure
 
 ```text
 src/
@@ -23,113 +325,20 @@ src/
     MermaidDiagram/
       index.tsx
       styles.module.css
+    RepositoryExplorer/
+      index.tsx
+      RepositoryIcon.tsx
+      styles.module.css
+      exampleData.ts
+      README.md
 ```
 
 Conventions:
 
-- Every component lives in its own folder under `src/components/<ComponentName>/`.
-- Component folder contains `index.tsx` and optional `styles.module.css`.
+- Every component lives in `src/components/<ComponentName>/`.
 - Public exports are centralized in `src/index.ts`.
-- Consumers should only import from package entrypoints, not from `dist/...` deep paths.
-
-## Why Docucraft
-
-- Built specifically for Docusaurus workflows.
-- Designed for long-term reuse across multiple documentation projects.
-- Includes type-safe APIs and publish-ready npm packaging.
-
-## Installation
-
-```bash
-npm install docucraft
-```
-
-## Docusaurus setup
-
-In `docusaurus.config.ts` ensure Mermaid support is enabled:
-
-```ts
-export default {
-  markdown: { mermaid: true },
-  themes: ['@docusaurus/theme-mermaid'],
-};
-```
-
-## Usage
-
-```mdx
-import {ClassDiagram, MermaidDiagram} from 'docucraft';
-
-<MermaidDiagram
-  definition={String.raw`flowchart TB
-A[Start] --> B[Done]`}
-  exportFileName="my-diagram"
-  hintText="Zoom: wheel. Pan: drag. Reset: double click."
-/>
-
-<ClassDiagram
-  data={{
-    classes: [
-      {
-        id: 'order',
-        name: 'OrderDto',
-        properties: [
-          {name: 'id', typeLabel: 'string', isPrimitive: true},
-          {name: 'customer', typeLabel: 'CustomerDto', typeId: 'customer'},
-        ],
-      },
-      {
-        id: 'customer',
-        name: 'CustomerDto',
-        properties: [{name: 'name', typeLabel: 'string', isPrimitive: true}],
-      },
-    ],
-  }}
-  focus="order"
-  mode="focus"
-/>
-```
-
-## Adding a new component
-
-1. Create folder: `src/components/YourComponent/`.
-2. Add implementation: `src/components/YourComponent/index.tsx`.
-3. Add local styles (optional): `src/components/YourComponent/styles.module.css`.
-4. Export component from `src/index.ts`.
-5. Update README with API and usage snippet.
-6. Run:
-
-```bash
-npm run typecheck
-npm run build
-npm run pack:check
-```
-
-## API
-
-### MermaidDiagram props
-
-- `definition: string` Mermaid source code.
-- `className?: string` Additional class on the root wrapper.
-- `ariaLabel?: string` Accessibility label for viewport.
-- `minScale?: number` Minimum zoom (default `0.6`).
-- `maxScale?: number` Maximum zoom (default `4`).
-- `zoomStep?: number` Zoom increment (default `0.12`).
-- `showHint?: boolean` Show or hide hint row (default `true`).
-- `hintText?: string` Custom hint text.
-- `exportFileName?: string` File name prefix for exports (default `diagram`).
-- `enableFullscreen?: boolean` Show fullscreen action (default `true`).
-- `enableExport?: boolean` Show export action (default `true`).
-
-### ClassDiagram props
-
-- `data: ClassDiagramModel` DTO/class graph model.
-- `focus?: string` Initially focused DTO/class id.
-- `mode?: 'focus' | 'full' | 'inline'` Initial rendering mode (default `focus`).
-- `height?: number` Canvas height in pixels (default `620`).
-- `maxDepth?: number` Relationship expansion depth in focus mode (default `1`).
-- `showPrimitives?: boolean` Include primitive-only properties (default `true`).
-- `className?: string` Additional class on the root wrapper.
+- CSS modules are copied into `dist` during build.
+- Consumers should import from package entrypoints, not from `dist/...` deep paths.
 
 ## Development
 
@@ -140,20 +349,48 @@ npm run build
 npm run pack:check
 ```
 
-## Publish checklist
+Build output is written to `dist/`.
 
-1. Update `version` in `package.json`.
-2. Run `npm run typecheck`.
-3. Run `npm run build`.
-4. Run `npm run pack:check`.
-5. Push to GitHub repository.
-6. Log in to npm: `npm login`.
-7. Publish: `npm publish --access public`.
+## Adding a Component
 
-## Licensing and attribution
+1. Create `src/components/YourComponent/`.
+2. Add `index.tsx` and, if needed, `styles.module.css`.
+3. Export the component and its public types from `src/index.ts`.
+4. Add a package subpath export in `package.json` if direct imports should be supported.
+5. Update this README with the component purpose, props, and an example.
+6. Run the full prepublish checks.
 
-This project is licensed under the MIT License.
+## Prepublish Checklist
+
+Before publishing to npm or pushing a release tag to GitHub:
+
+```bash
+npm run typecheck
+npm run build
+npm run pack:check
+git diff --check
+git status --short
+```
+
+Also verify:
+
+- `package.json` version is new and matches the intended release.
+- `CHANGELOG.md` describes the release.
+- `README.md` documents new public API.
+- `npm pack --dry-run` includes the expected files only.
+- No generated tarball or local test artifact is committed.
+
+Publish:
+
+```bash
+npm login
+npm publish --access public
+git tag vX.Y.Z
+git push origin main --tags
+```
+
+## License
+
+MIT. See [LICENSE](./LICENSE).
 
 Copyright (c) Jiří Šašek.
-
-When redistributing this software, keep the copyright notice and license text.

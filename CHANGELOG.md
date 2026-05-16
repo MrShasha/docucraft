@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2026-05-16
+
+### Added
+- Added `RepositoryExplorer`, a compact repository tree component with SVG file/folder icons, a detail panel, and optional relation graph.
+- Added root export `RepositoryExplorer` and related public types.
+- Added subpath export `docucraft/repository-explorer`.
+- Added repository explorer example data and component-level README.
+
+### Changed
+- Expanded the main README into an open-source usage guide with installation, Docusaurus setup, component examples, API notes, and publish checklist.
+- Normalized package repository metadata for npm publishing.
+
 ## [1.1.1] - 2026-04-16
 
 ### Changed

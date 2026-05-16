@@ -1,0 +1,434 @@
+.repositoryExplorer {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.9fr) minmax(320px, 1.1fr);
+  gap: 0.75rem;
+  align-items: start;
+  margin: 1rem 0 1.5rem;
+  font-size: 0.82rem;
+}
+
+.sections {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.section,
+.detailPanel {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 6px;
+  background: var(--ifm-background-surface-color);
+  overflow: hidden;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.45rem 0.55rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  background: color-mix(in srgb, var(--ifm-color-primary-lightest) 9%, transparent);
+}
+
+.sectionHeader h2 {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.2;
+}
+
+.sectionHeader span {
+  flex: 0 0 auto;
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.72rem;
+}
+
+.treeList {
+  list-style: none;
+  margin: 0;
+  padding: 0.12rem 0;
+}
+
+.treeItem {
+  margin: 0;
+}
+
+.nodeRow {
+  --node-depth: 0;
+  display: grid;
+  grid-template-columns: 1.05rem 1.25rem minmax(0, 1fr);
+  gap: 0.28rem;
+  align-items: center;
+  min-height: 1.5rem;
+  padding: 0.08rem 0.35rem 0.08rem calc(0.32rem + var(--node-depth) * 0.86rem);
+  border-left: 2px solid transparent;
+}
+
+.nodeRow:hover,
+.nodeRowActive {
+  background: var(--ifm-hover-overlay);
+}
+
+.nodeRowActive {
+  border-left-color: var(--ifm-color-primary);
+}
+
+.toggle {
+  display: inline-grid;
+  place-items: center;
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 3px;
+  background: var(--ifm-background-color);
+  color: var(--ifm-color-emphasis-800);
+  font-size: 0.72rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.toggle:disabled {
+  border-color: transparent;
+  background: transparent;
+  cursor: default;
+}
+
+.icon {
+  --icon-page: #f7fafc;
+  --icon-fold: #dce7f5;
+  --icon-accent: #3f6fb5;
+  --icon-stroke: #30445f;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.2rem;
+  height: 1.2rem;
+  color: var(--icon-accent);
+}
+
+.iconSvg {
+  display: block;
+  width: 1.2rem;
+  height: 1.2rem;
+  overflow: visible;
+}
+
+.iconPage {
+  fill: var(--icon-page);
+  stroke: var(--icon-stroke);
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+
+.iconFold {
+  fill: var(--icon-fold);
+  stroke: var(--icon-stroke);
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+
+.iconFolderBack {
+  fill: #d6e7ff;
+  stroke: #44658f;
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+
+.iconFolderFront {
+  fill: #8fc5ff;
+  stroke: #44658f;
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+
+.iconAccentStroke,
+.iconAccentStrokeOnly {
+  fill: none;
+  stroke: var(--icon-accent);
+  stroke-width: 1.45;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.iconAccentFill {
+  fill: var(--icon-accent);
+}
+
+.iconText {
+  fill: var(--icon-accent);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 3.1px;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-anchor: middle;
+}
+
+.detailHeader .icon,
+.detailHeader .iconSvg {
+  width: 1.45rem;
+  height: 1.45rem;
+}
+
+.icon-implementation,
+.icon-code {
+  --icon-accent: #2f7d52;
+}
+
+.icon-interface {
+  --icon-accent: #b27900;
+}
+
+.icon-dto {
+  --icon-accent: #3d70b2;
+}
+
+.icon-json {
+  --icon-accent: #b7791f;
+}
+
+.icon-xml,
+.icon-html {
+  --icon-accent: #b14d25;
+}
+
+.icon-yaml {
+  --icon-accent: #7d5eb8;
+}
+
+.icon-text,
+.icon-markdown,
+.icon-docs {
+  --icon-accent: #5b6778;
+}
+
+.icon-image {
+  --icon-accent: #2c8f7b;
+}
+
+.icon-video {
+  --icon-accent: #8a5cc2;
+}
+
+.icon-audio {
+  --icon-accent: #c24d7b;
+}
+
+.icon-pgm {
+  --icon-accent: #5b7f95;
+}
+
+.icon-rosMsg {
+  --icon-accent: #3b82c4;
+}
+
+.icon-config {
+  --icon-accent: #6d5bd0;
+}
+
+.icon-test {
+  --icon-accent: #16816d;
+}
+
+.icon-script {
+  --icon-accent: #6f6a1f;
+}
+
+.icon-package,
+.icon-project,
+.icon-solution {
+  --icon-accent: #315f9f;
+}
+
+.icon-lock {
+  --icon-accent: #8a6d2f;
+}
+
+.icon-database {
+  --icon-accent: #2b7c9f;
+}
+
+.icon-archive {
+  --icon-accent: #8c6239;
+}
+
+.icon-dependency {
+  --icon-accent: #b04455;
+}
+
+.nodeTitle {
+  min-width: 0;
+  overflow: hidden;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  font-size: 0.79rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.childrenWrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 140ms ease;
+}
+
+.childrenWrapOpen {
+  grid-template-rows: 1fr;
+}
+
+.childrenWrap > * {
+  overflow: hidden;
+}
+
+.detailPanel {
+  position: sticky;
+  top: 1rem;
+  display: grid;
+  gap: 0.65rem;
+  padding: 0.75rem;
+  max-height: calc(100vh - 6rem);
+  overflow: auto;
+}
+
+.detailHeader {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.5rem;
+  align-items: start;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.detailHeader h2 {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.detailHeader p,
+.detailText {
+  margin: 0.25rem 0 0;
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.path {
+  display: inline-block;
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.14rem 0.32rem;
+  overflow-wrap: anywhere;
+  font-size: 0.74rem;
+}
+
+.relationsBlock {
+  display: grid;
+  gap: 0.55rem;
+  padding-top: 0.25rem;
+}
+
+.relationsBlock h3 {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.relationsBlock :global(.react-flow) {
+  width: 100%;
+  height: 240px;
+  min-height: 240px;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--ifm-color-emphasis-100) 55%, transparent);
+}
+
+.flowNodeSelected,
+.flowNode,
+.flowNodeExternal {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 6px;
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  font-size: 0.74rem;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+.flowNodeSelected {
+  border-color: var(--ifm-color-primary);
+}
+
+.flowNodeExternal {
+  border-style: dashed;
+}
+
+.flowEdge {
+  color: var(--ifm-color-primary);
+  font-size: 0.68rem;
+}
+
+.relationList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.relationList li {
+  display: grid;
+  gap: 0.1rem;
+  padding: 0.4rem 0;
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.relationList li:first-child {
+  border-top: 0;
+}
+
+.relationList strong {
+  font-size: 0.78rem;
+}
+
+.relationList span,
+.relationList p {
+  margin: 0;
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.76rem;
+  line-height: 1.35;
+}
+
+.emptyGraph,
+.emptyRelations {
+  display: grid;
+  min-height: 4rem;
+  place-items: center;
+  padding: 0.75rem;
+  border: 1px dashed var(--ifm-color-emphasis-300);
+  border-radius: 6px;
+  color: var(--ifm-color-emphasis-700);
+  text-align: center;
+  font-size: 0.78rem;
+}
+
+@media (max-width: 996px) {
+  .repositoryExplorer {
+    grid-template-columns: 1fr;
+  }
+
+  .detailPanel {
+    position: static;
+    max-height: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .nodeRow {
+    grid-template-columns: 1.05rem 1.25rem minmax(0, 1fr);
+  }
+
+}

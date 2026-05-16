@@ -1,6 +1,6 @@
 {
   "name": "docucraft",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Docucraft is an open source component library of reusable React components for Docusaurus.",
   "keywords": [
     "docusaurus",
@@ -13,6 +13,9 @@
     "diagram",
     "classdiagram",
     "classgraph",
+    "repository-explorer",
+    "repository-map",
+    "solution-explorer",
     "reactflow",
     "pan",
     "zoom",
@@ -22,7 +25,7 @@
   "homepage": "https://github.com/MrShasha/docucraft",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MrShasha/docucraft.git"
+    "url": "git+https://github.com/MrShasha/docucraft.git"
   },
   "bugs": {
     "url": "https://github.com/MrShasha/docucraft/issues"
@@ -53,6 +56,11 @@
       "types": "./dist/components/ClassDiagram/index.d.ts",
       "import": "./dist/components/ClassDiagram/index.js",
       "default": "./dist/components/ClassDiagram/index.js"
+    },
+    "./repository-explorer": {
+      "types": "./dist/components/RepositoryExplorer/index.d.ts",
+      "import": "./dist/components/RepositoryExplorer/index.js",
+      "default": "./dist/components/RepositoryExplorer/index.js"
     }
   },
   "files": [

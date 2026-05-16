@@ -14,3 +14,15 @@ export type {
 	ClassDiagramProps as ClassGraphProps,
 	ClassDiagramModel as ClassGraphModel,
 } from './components/ClassDiagram/index.js';
+
+export {default as RepositoryExplorer} from './components/RepositoryExplorer/index.js';
+export type {
+	RepositoryExplorerLabels,
+	RepositoryExplorerProps,
+	RepositoryNode,
+	RepositoryNodeKind,
+	RepositoryNodeType,
+	RepositoryRelation,
+	RepositoryRelationType,
+	RepositorySection,
+} from './components/RepositoryExplorer/index.js';
