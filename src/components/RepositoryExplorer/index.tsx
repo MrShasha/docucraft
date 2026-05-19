@@ -103,13 +103,13 @@ export type RepositoryExplorerProps = {
 type NodeIndex = Map<string, RepositoryNode>;
 
 const defaultLabels: RepositoryExplorerLabels = {
-  collapseNode: (name) => `Sbalit ${name}`,
-  expandNode: (name) => `Rozbalit ${name}`,
-  emptySelection: 'Vyber položku ve stromu repozitáře.',
-  graphFallback: 'Graf vztahů se načte v prohlížeči.',
-  noRelations: 'Tato položka nemá popsané vztahy.',
-  relationsTitle: 'Vztahy',
-  sectionItemCount: (count) => `${count} položek`,
+  collapseNode: (name) => `Collapse ${name}`,
+  expandNode: (name) => `Expand ${name}`,
+  emptySelection: 'Select a file or folder in the repository tree.',
+  graphFallback: 'The relation graph loads in the browser.',
+  noRelations: 'No relations described for this item.',
+  relationsTitle: 'Relations',
+  sectionItemCount: (count) => `${count} items`,
 };
 
 function nodeKey(node: RepositoryNode, parentKey = 'root'): string {
